@@ -1,10 +1,13 @@
 import OpenAI from "openai";
+import env from "dotenv"
 
+env.config()
 const client = new OpenAI({
+    apiKey:process.env.OPENAI_API_KEY
 });
 
 
-export  const summarizeText=async(text:string)=>{
+export  const summarizeText=async(text:string):Promise<string>=>{
     console.log(text)
     try {
     const response = await client.chat.completions.create({
@@ -14,10 +17,16 @@ export  const summarizeText=async(text:string)=>{
     { role: "user", content: `Summarize this: ${text}` },
   ],});
 console.log(response)
-return response.choices[0].message.content;
+const res= response.choices[0].message.content;
+if(res===null){
+    return 'no summary'
+}
+return res
 
-    } catch (error:any) {
-    console.error("Error while summarizing:", error.message || error);
-    return error;
+    } catch (error:unknown) {
+        if(error instanceof Error){
+            return `"Error while summarizing:" ${error.message}`;
+        }
+    return "summary failed";
     }
 }

@@ -1,4 +1,3 @@
-import React from "react";
 import Body from "./body/body";
 import Nav from "./nav/nav";
 import History from "./history/histtory";

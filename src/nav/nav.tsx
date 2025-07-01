@@ -1,4 +1,3 @@
-import React from "react";
 import logo from "../assets/logo.png"
 export default function Nav(){
     return <main className="w-[100%] bg-gradient-to-t from-amber-200 to-yellow-300 flex justify-between items-center">
