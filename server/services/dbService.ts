@@ -1,9 +1,10 @@
-import { response } from "express";
+import { UUID } from "crypto";
 import { supabase } from "../config/db";
 
-export const getAllContent=async()=>{
+export const getAllContent=async(userId:string)=>{
     try {
-        const data=await supabase.from("content").select("*")
+        console.log(userId)
+        const data=await supabase.from("content").select("*").eq("userId", userId)
         console.log(data)
         return data
     } catch (error) {
@@ -19,9 +20,9 @@ export const getContent=async(id:number)=>{
         return error
     }
 }
-export const insertContent=async(content:string,summary:string,type:string)=>{
+export const insertContent=async(content:string,summary:string,type:string,userId:string)=>{
     try {
-        const data=await supabase.from("content").insert([{content:content,summary:summary,type:type}])
+        const data=await supabase.from("content").insert([{content:content,summary:summary,type:type,userId:userId}])
         console.log(data)
                 return data
     } catch (error) {

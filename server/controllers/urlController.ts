@@ -6,6 +6,7 @@ export const summarizeurl=async(req:Request,res:Response):Promise<void>=>{
 
     try {
     const result=await summarizeUrl(url)
+    console.log(result)
      res.send(result)
     } catch (error) {
     res.status(500).json({

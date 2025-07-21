@@ -9,20 +9,17 @@ const app=express();
 app.use(express.json());
 
 app.use(cors({
-    origin: 'http://localhost:7000',  
+    origin: 'http://localhost:5173',  
     credentials: true   ,
       methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization']             
   }));
 
-app.get("/",(req,res)=>{
-    res.json("hello")
-})
 
-app.use("/",textRoutes)
-app.use("/",pdfRoutes)
-app.use("/",urlRoutes)
-app.use("/",dbRoutes)
+app.use("/text",textRoutes)
+app.use("/pdf",pdfRoutes)
+app.use("/url",urlRoutes)
+app.use("/db",dbRoutes)
 
 
 

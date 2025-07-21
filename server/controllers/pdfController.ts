@@ -13,7 +13,8 @@ export const summarizepdf=async(req:Request,res:Response):Promise<void>=>{
         res.status(400).send("No file uploaded.");
         return
     }
-       const filePath=req.file.path;
+const filePath = path.resolve(req.file.path).replace(/\\/g, "/");
+console.log(filePath)
 
     try{
         const summary=await summarizePdf(filePath)

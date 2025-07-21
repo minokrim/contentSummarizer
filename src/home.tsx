@@ -2,11 +2,35 @@ import Body from "./body/body";
 import Nav from "./nav/nav";
 import History from "./history/histtory";
 import Footer from "./footer/footer";
+import axios from "axios";
+import { useEffect, useState } from "react";
 export default function Home(){
+        interface contentData{
+        id:number,
+        content:string,
+        summary:string,
+        type:string,
+        created_at:string
+    }
+        const [data,setData]=useState<contentData|null>(null)
+        const [dataId,setDataId]=useState<number|null>(null)
+
+        useEffect(()=>{
+            if(dataId!==null){
+                console.log("Sending request with ID:", dataId); 
+                axios.post("http://localhost:7000/content/data",{dataId:dataId})
+                .then((res)=>{
+                    setData(res.data.data[0])
+                })
+                .catch((error)=>{
+                    console.log(error)
+                })
+            }
+        },[dataId])
     return <main className="bg-white w-full flex flex-col">
         <Nav/>
-        <Body/>
-        <History/>
+        <Body selectedData={data}/>
+        <History onSelectId={setDataId}/>
         <Footer/>
     </main>
 }

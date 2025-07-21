@@ -6,6 +6,7 @@ import env from "dotenv";
 import AdmZip from "adm-zip";
 import * as path from 'path';
 import { fileURLToPath } from 'url';
+// import { text } from 'body-parser';
 
 env.config();
 
@@ -16,6 +17,7 @@ let ilovepdf:ILovePDFApi|undefined
 
 if(publicKey && typeof(publicKey)==="string" && secretKey && typeof(secretKey)==="string"){
  ilovepdf = new ILovePDFApi(publicKey, secretKey);
+ console.log("api connected succesfully")
 }
 else{
   console.error("missing api keys")
@@ -37,28 +39,19 @@ export const summarizePdf = async (file: string): Promise<string> => {
         const task = ilovepdf.newTask("extract");
         await task.start();
 
-        await task.addFile(file);
+      const fullPath = path.join(file);
+      const fullfile = new ILovePDFFile(fullPath)
+       await task.addFile(fullfile);
 
         await task.process();
 
-        const tmpPath = path.resolve(__dirname, 'output.zip');;
         const fileBuffer = await task.download();
 
-        fs.writeFileSync(tmpPath, fileBuffer); 
+        let textfileEntries = fileBuffer.toString(); 
 
-    const zip = new AdmZip(tmpPath);
-    const textfileEntries = zip.getEntries().find(e => e.entryName.endsWith('.txt'));
-
-      if (!textfileEntries) {
-      throw new Error("No .txt file found in the extracted ZIP.");
-    }
-    
-
-    const extractedText = textfileEntries.getData().toString("utf8");
-    console.log(extractedText)
-    fs.unlinkSync(tmpPath); 
-
-    
+    if (textfileEntries.length > 12000) {
+      textfileEntries = textfileEntries.slice(0, 12000); 
+      }    
     try {
       const response = await client.chat.completions.create({
         model: "gpt-3.5-turbo",
@@ -67,7 +60,7 @@ export const summarizePdf = async (file: string): Promise<string> => {
             role: "system",
             content: "You are a helpful assistant that summarizes text.",
           },
-          { role: "user", content: `Summarize this: ${extractedText}` },
+          { role: "user", content: `Summarize this: ${textfileEntries}` },
         ],
       });
       const res = response.choices[0].message.content;
@@ -83,7 +76,7 @@ export const summarizePdf = async (file: string): Promise<string> => {
     }
 
   } catch (error: any) {
-    console.error("PDF summarization error:", error.message);
+    console.error("PDF summarization error:", error);
     throw new Error("Failed to summarize PDF.");
   }
 };

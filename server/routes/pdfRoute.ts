@@ -6,6 +6,6 @@ import { limiter } from '../config/rateLimiter';
 
 const router=express.Router();
 
-router.post("/summarize/pdf",limiter,upload.single("file"),summarizepdf)
+router.post("/summarize/file",limiter,upload.single("file"),summarizepdf)
 
 export default router

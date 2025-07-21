@@ -23,6 +23,8 @@ export const summarizeUrl=async(url:string)=>{
     }
         const $ = cheerio.load(res.data);
         const fullBodyText = $('body').text().trim().replace(/\s+/g, ' ');
+        const maxChars = 6000; 
+        const trimmedText = fullBodyText.slice(0, maxChars);
         console.log(fullBodyText)
         try {
       const response = await client.chat.completions.create({
@@ -32,14 +34,16 @@ export const summarizeUrl=async(url:string)=>{
             role: "system",
             content: "You are a helpful assistant that summarizes text.",
           },
-          { role: "user", content: `Summarize this: ${fullBodyText}` },
+          { role: "user", content: `Summarize this: ${trimmedText}` },
         ],
       });
-      const res = response.choices[0].message.content;
-      if (res === null) {
+      const summary = response.choices[0].message.content;
+      console.log(response)
+      console.log("SUMMARY TO INSERT:", summary);
+      if (summary === null) {
         return "no summary";
       }
-      return res;
+      return summary;
         } catch (error:unknown) {
                 if (error instanceof Error) {
         return `"Error while summarizing:" ${error.message}`;
