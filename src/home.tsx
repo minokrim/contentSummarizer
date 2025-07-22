@@ -14,6 +14,8 @@ export default function Home(){
     }
         const [data,setData]=useState<contentData|null>(null)
         const [dataId,setDataId]=useState<number|null>(null)
+        const [refresh, setRefresh] = useState<boolean>(false);
+
 
         useEffect(()=>{
             if(dataId!==null){
@@ -29,8 +31,8 @@ export default function Home(){
         },[dataId])
     return <main className="bg-white w-full flex flex-col">
         <Nav/>
-        <Body selectedData={data}/>
-        <History onSelectId={setDataId}/>
+        <Body selectedData={data} onRefresh={() => setRefresh((prev) => !prev)}/>
+        <History onSelectId={setDataId} refreshTrigger={refresh}/>
         <Footer/>
     </main>
 }

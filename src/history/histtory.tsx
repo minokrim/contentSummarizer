@@ -1,7 +1,7 @@
     import { useEffect, useState } from "react";
     import axios from "axios";
 
-    export default function History({onSelectId}:{onSelectId:(id:number)=>void}) {
+    export default function History({onSelectId,refreshTrigger}:{onSelectId:(id:number)=>void,refreshTrigger:boolean}) {
 
         interface contentData{
             id:number,
@@ -13,8 +13,8 @@
         const [data,setData]=useState<contentData[]>([])
 
         const userId = localStorage.getItem("userId");
-        function handleDataOutput(){
-            axios.get(`http://localhost:7000/db/content/data/all`,{params:{userId}})
+        const handleDataOutput=()=>{
+            axios.get(`http://localhost:7004/db/content/data/all`,{params:{userId}})
             .then((res)=>{
                 setData(res.data.data)
                 return 
@@ -25,8 +25,10 @@
         }
 
         useEffect(()=>{
-            handleDataOutput()
-        },[])
+                handleDataOutput()
+        },[refreshTrigger])
+        
+
 
 
         return <main className="w-full p-5 md:p-10 bg-amber-50">

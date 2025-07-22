@@ -1,4 +1,4 @@
-import { MdOutlineTextFields } from "react-icons/md";
+import { MdOutlineTextFields, MdSummarize } from "react-icons/md";
 import { FaLink } from "react-icons/fa";
 import { FaFilePdf } from "react-icons/fa6";
 import axios from "axios";
@@ -15,7 +15,7 @@ interface contentData{
         created_at:string
 }
 
-export default function Body({selectedData}:{selectedData:contentData|null}){
+export default function Body({selectedData,onRefresh}:{selectedData:contentData|null, onRefresh: () => void}){
     const [content,setContent]=useState<string>()
     const [summarisedContent,setSummarisedContent]=useState<string>("")
     const [inputType,setInputType]=useState("")
@@ -39,11 +39,12 @@ function handleTextClick() {
         formData.append("file", file);
         formData.append("userId", userId);
 
-        axios.post("http://localhost:7000/pdf/summarize/file", formData)
+        axios.post("http://localhost:7003/pdf/summarize/file", formData)
             .then((res) => {
                 const summary = res.data.summary || res.data;
+                console.log("summary",summary)
                 setSummarisedContent(summary);
-                return axios.post("http://localhost:7000/db/insert/content", {
+                return axios.post("http://localhost:7004/db/insert/content", {
                     content: content,
                     summary: summary,
                     type: inputType,
@@ -51,20 +52,19 @@ function handleTextClick() {
                 });
             })
             .then((res) => {
-                console.log(res);
                 setLoading(false);
+                onRefresh();
             })
             .catch((err) => {
-                console.log(err);
                 setLoading(false);
             });
 
     } else {
-        axios.post(`http://localhost:7000/${inputType}/summarize/${inputType}`, { content: content })
+        axios.post(`http://localhost:${inputType==="text"?7001:7002}/${inputType}/summarize/${inputType}`, { content: content })
             .then((res) => {
                 const summary = res.data.summary || res.data;
                 setSummarisedContent(summary);
-                return axios.post("http://localhost:7000/insert/content", {
+                return axios.post("http://localhost:7004/db/insert/content", {
                     content: content,
                     summary: summary,
                     type: inputType,
@@ -72,8 +72,8 @@ function handleTextClick() {
                 });
             })
             .then((res) => {
-                console.log(res);
                 setLoading(false);
+                onRefresh();
             })
             .catch((err) => {
                 console.log(err);
@@ -158,7 +158,7 @@ function handleTextClick() {
             </section>
 
             <div data-placeholder="AI Summary" className="w-full md:w-[40%] h-[20em] md:h-[25em] bg-amber-50 shadow-black shadow-sm font-serif">
-                <h4 className="text-black">{summarisedContent}</h4>
+                <h4 className="text-black font-serif p-5">{summarisedContent||"No summary available."}</h4>
             </div>
         </section>
     </main>

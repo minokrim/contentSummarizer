@@ -19,6 +19,7 @@ console.log(filePath)
     try{
         const summary=await summarizePdf(filePath)
         res.setHeader('Content-Type', 'application/json');
+        console.log(summary)
         res.send({summary});
         fs.unlinkSync(filePath);
     }

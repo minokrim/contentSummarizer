@@ -63,7 +63,13 @@ export const summarizePdf = async (file: string): Promise<string> => {
           { role: "user", content: `Summarize this: ${textfileEntries}` },
         ],
       });
-      const res = response.choices[0].message.content;
+      
+      let res
+      if(response.choices[0].finish_reason === "content_filter"){
+         res="Sorry, the content cannot be summarized due to content policy restrictions.";
+      }else{
+       res = response.choices[0].message.content;
+      }
       if (res === null) {
         return "no summary";
       }

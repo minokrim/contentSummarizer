@@ -4,6 +4,7 @@ import urlRoutes from "../server/routes/urlRoute.js"
 import dbRoutes from "../server/routes/dbroute.js"
 import express from "express"
 import cors from "cors"
+import env from "dotenv";
 
 const app=express();
 app.use(express.json());
@@ -15,16 +16,18 @@ app.use(cors({
   allowedHeaders: ['Content-Type', 'Authorization']             
   }));
 
+let PORT=process.env.SERVER_PORT;
 
-app.use("/text",textRoutes)
-app.use("/pdf",pdfRoutes)
-app.use("/url",urlRoutes)
-app.use("/db",dbRoutes)
+console.log("PORT", PORT)
+  app.use("/text", textRoutes);
+  app.use("/url", urlRoutes);
+  app.use("/pdf", pdfRoutes);
+  app.use("/db", dbRoutes);
 
 
 
-app.listen(7000,()=>{
-      console.log("Server running on port 7000");
+app.listen(PORT,()=>{
+      console.log(`Server running on port ${PORT}`);
 })
 
 
