@@ -1,54 +1,166 @@
-# React + TypeScript + Vite
+# Content Summarizer 📝
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A web application that allows users to summarize content from various sources, including text, URLs, and PDF files. It leverages powerful AI models to provide concise and informative summaries. The application features a clean and intuitive user interface, making it easy to extract key information from large amounts of text. It solves the problem of information overload by providing a quick and efficient way to understand the main points of any document or web page.
 
-Currently, two official plugins are available:
+## 🚀 Key Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Text Summarization**: Summarize any text input directly into the application.
+- **URL Summarization**: Provide a URL, and the application will fetch the content and summarize it.
+- **PDF Summarization**: Upload a PDF file, and the application will extract the text and summarize it.
+- **History Tracking**: Keeps track of your summarization history for easy access to previous summaries.
+- **Database Integration**: Stores content and summaries in a database for persistence and retrieval.
+- **Rate Limiting**: Implements rate limiting to prevent abuse of the summarization API.
+- **CORS Support**: Configured to allow requests from specific origins for enhanced security.
 
-## Expanding the ESLint configuration
+## 🛠️ Tech Stack
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- **Frontend**:
+    - React
+    - React DOM
+    - CSS
+- **Backend**:
+    - Node.js
+    - Express
+    - CORS
+    - Dotenv
+- **AI Services**:
+    - OpenAI API (for text summarization)
+    - ILovePDF API (for PDF text extraction)
+- **Database**:
+    - Supabase
+- **Utilities**:
+    - Axios (for HTTP requests)
+    - Cheerio (for HTML parsing)
+    - Multer (for handling file uploads)
+    - Adm-zip (for handling ZIP archives)
+    - Crypto (for generating UUIDs)
+- **Build Tools**:
+    - Vite
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+## 📦 Getting Started
+
+### Prerequisites
+
+- Node.js (>=18)
+- npm or yarn
+- OpenAI API key
+- ILovePDF API keys (public and secret)
+- Supabase account and database setup
+
+### Installation
+
+1.  Clone the repository:
+
+    ```bash
+    git clone <repository_url>
+    cd <repository_directory>
+    ```
+
+2.  Install dependencies for the frontend:
+
+    ```bash
+    cd client
+    npm install # or yarn install
+    ```
+
+3.  Install dependencies for the backend:
+
+    ```bash
+    cd server
+    npm install # or yarn install
+    ```
+
+4.  Create a `.env` file in the `server` directory and add the following environment variables:
+
+    ```
+    SERVER_PORT=7000
+    OPENAI_API_KEY=<your_openai_api_key>
+    ILOVEPDF_PUBLIC=<your_ilovepdf_public_key>
+    ILOVEPDF_SECRET=<your_ilovepdf_secret_key>
+    SUPABASE_URL=<your_supabase_url>
+    SUPABASE_ANON_KEY=<your_supabase_anon_key>
+    ```
+
+### Running Locally
+
+1.  Start the backend server:
+
+    ```bash
+    cd server
+    npm run dev # or yarn dev
+    ```
+
+2.  Start the frontend development server:
+
+    ```bash
+    cd client
+    npm run dev # or yarn dev
+    ```
+
+    The frontend application will be available at `http://localhost:5173`.
+
+## 💻 Project Structure
+
+```
+📂 Content Summarizer
+├── contentsumm/
+│   ├── src/
+│   │   ├── main.tsx          # Main entry point for React application
+│   │   ├── App.tsx           # Root component
+│   │   ├── home.tsx          # Main page component
+│   │   ├── body/
+│   │   │   └── body.tsx      # Component to display content and summary
+│   │   ├── nav/
+│   │   │   └── nav.tsx       # Navigation component
+│   │   ├── history/
+│   │   │   └── history.tsx   # History component
+│   │   ├── footer/
+│   │   │   └── footer.tsx    # Footer component
+│   │   ├── index.css         # Global CSS styles
+│   │   └── App.css           # CSS styles for App component
+│   ├── public/
+│   │   └── vite.svg
+│   ├── index.html
+│   ├── vite.config.ts
+│   └── ...
+├── server/
+│   ├── index.ts            # Main entry point for the backend server
+│   ├── routes/
+│   │   ├── textRoute.ts      # Route for text summarization
+│   │   ├── urlRoute.ts       # Route for URL summarization
+│   │   ├── pdfRoute.ts       # Route for PDF summarization
+│   │   └── dbroute.ts        # Route for database operations
+│   ├── controllers/
+│   │   ├── textController.ts # Controller for text summarization
+│   │   ├── urlController.ts  # Controller for URL summarization
+│   │   ├── pdfController.ts  # Controller for PDF summarization
+│   │   └── dbController.ts   # Controller for database operations
+│   ├── services/
+│   │   ├── textService.ts    # Service for text summarization
+│   │   ├── urlService.ts     # Service for URL summarization
+│   │   ├── pdfService.ts     # Service for PDF summarization
+│   │   └── dbService.ts      # Service for database operations
+│   ├── config/
+│   │   ├── rateLimiter.ts  # Rate limiting configuration
+│   │   └── db.ts           # Database configuration
+│   ├── middleware/
+│   │   └── multer.ts       # Multer middleware for file uploads
+│   ├── .env                # Environment variables
+│   └── ...
+├── README.md             # This file
+├── package.json          # Project dependencies and scripts
+└── ...
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## 📸 Screenshots
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+(Add screenshots of the application here)
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+
+## 📬 Contact
+
+[Kareem Alameen] - [ayomidekareem563@gmail.com]
+
+## 💖 Thanks
+
+Thank you for checking out the Content Summarizer! We hope it helps you streamline your information consumption.
