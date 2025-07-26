@@ -14,7 +14,7 @@
 
         const userId = localStorage.getItem("userId");
         const handleDataOutput=()=>{
-            axios.get(`http://contentsummarizer-ybo5.onrender.com/db/content/data/all`,{params:{userId}})
+            axios.get(`https://contentsummarizer-ybo5.onrender.com/db/content/data/all`,{params:{userId}})
             .then((res)=>{
                 setData(res.data.data)
                 return 

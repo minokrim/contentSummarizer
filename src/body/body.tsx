@@ -38,12 +38,12 @@ function handleTextClick() {
         formData.append("file", file);
         formData.append("userId", userId);
 
-        axios.post("http://contentsummarizer-ybo5.onrender.com/pdf/summarize/file", formData)
+        axios.post("https://contentsummarizer-ybo5.onrender.com/pdf/summarize/file", formData)
             .then((res) => {
                 const summary = res.data.summary || res.data;
                 console.log("summary",summary)
                 setSummarisedContent(summary);
-                return axios.post("http://contentsummarizer-ybo5.onrender.com/db/insert/content", {
+                return axios.post("https://contentsummarizer-ybo5.onrender.com/db/insert/content", {
                     content: content,
                     summary: summary,
                     type: inputType,
@@ -60,11 +60,11 @@ function handleTextClick() {
             });
 
     } else {
-        axios.post(`http://contentsummarizer-ybo5.onrender.com/${inputType}/summarize/${inputType}`, { content: content })
+        axios.post(`https://contentsummarizer-ybo5.onrender.com/${inputType}/summarize/${inputType}`, { content: content })
             .then((res) => {
                 const summary = res.data.summary || res.data;
                 setSummarisedContent(summary);
-                return axios.post("http://contentsummarizer-ybo5.onrender.com/db/insert/content", {
+                return axios.post("https://contentsummarizer-ybo5.onrender.com/db/insert/content", {
                     content: content,
                     summary: summary,
                     type: inputType,
