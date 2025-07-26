@@ -8,6 +8,7 @@ import env from "dotenv";
 
 const app=express();
 app.use(express.json());
+env.config();
 
 app.use(cors({
     origin: ["http://localhost:5173","https://contentsummarizer-1.onrender.com"],  
