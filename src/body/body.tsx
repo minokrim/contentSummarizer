@@ -1,4 +1,4 @@
-import { MdOutlineTextFields, MdSummarize } from "react-icons/md";
+import { MdOutlineTextFields } from "react-icons/md";
 import { FaLink } from "react-icons/fa";
 import { FaFilePdf } from "react-icons/fa6";
 import axios from "axios";
@@ -20,7 +20,6 @@ export default function Body({selectedData,onRefresh}:{selectedData:contentData|
     const [summarisedContent,setSummarisedContent]=useState<string>("")
     const [inputType,setInputType]=useState("")
     const[loading,setLoading]=useState(false)
-    const[style,setStyle]=useState<React.CSSProperties>({})
     const [userId, setUserId] = useState<string>("");
     const [file, setFile] = useState<File | null>(null);
 
@@ -51,11 +50,12 @@ function handleTextClick() {
                     userId: userId,
                 });
             })
-            .then((res) => {
+            .then((_res) => {
                 setLoading(false);
                 onRefresh();
+
             })
-            .catch((err) => {
+            .catch((_err) => {
                 setLoading(false);
             });
 
@@ -81,9 +81,6 @@ function handleTextClick() {
             });
     }
 
-    if (inputType === "text") {
-        setStyle({ border: "1px solid green" });
-    }
 }
 
 
