@@ -16,6 +16,10 @@ app.use(cors({
   allowedHeaders: ['Content-Type', 'Authorization']             
   }));
 
+app.get('/test-cors', (req, res) => {
+  res.json({ message: 'CORS is working!' });
+});
+
 let PORT=process.env.SERVER_PORT;
 
 console.log("PORT", PORT)
