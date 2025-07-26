@@ -71,12 +71,11 @@ function handleTextClick() {
                     userId: userId,
                 });
             })
-            .then((res) => {
+            .then((_res) => {
                 setLoading(false);
                 onRefresh();
             })
-            .catch((err) => {
-                console.log(err);
+            .catch((_err) => {
                 setLoading(false);
             });
     }
