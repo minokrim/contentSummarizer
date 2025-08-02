@@ -135,7 +135,8 @@ function handleTextClick() {
         onChange={(e) => setContent(e.target.value)}
         placeholder={`Paste your ${inputType} here...`}
         disabled={!inputType}
-        className="border border-amber-200 w-full h-[15em] bg-white text-start p-2"
+        className="border border-amber-200 w-full h-[15em] bg-white text-start p-2 overflow-scroll"
+        style={{scrollbarWidth:'none',msOverflowStyle: 'none'}}
     />
 )}
 
@@ -153,7 +154,7 @@ function handleTextClick() {
                 {loading && (<img src={spinner}/>)}
             </section>
 
-            <div data-placeholder="AI Summary" className="w-full md:w-[40%] h-[20em] md:h-[25em] bg-amber-50 shadow-black shadow-sm font-serif">
+            <div data-placeholder="AI Summary" className="w-full md:w-[40%] h-[20em] md:h-[25em] bg-amber-50 shadow-black shadow-sm font-serif overflow-y-scroll" style={{scrollbarWidth:'none',msOverflowStyle: 'none'}}>
                 <h4 className="text-black font-serif p-5">{summarisedContent||"No summary available."}</h4>
             </div>
         </section>
