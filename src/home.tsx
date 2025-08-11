@@ -19,8 +19,7 @@ export default function Home(){
 
         useEffect(()=>{
             if(dataId!==null){
-                console.log("Sending request with ID:", dataId); 
-                axios.post("http://localhost:7000/content/data",{dataId:dataId})
+                axios.post("https://contentsummarizer-ybo5.onrender.com/db/content/data",{dataId:dataId})
                 .then((res)=>{
                     setData(res.data.data[0])
                 })

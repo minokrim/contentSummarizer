@@ -41,7 +41,6 @@ function handleTextClick() {
         axios.post("https://contentsummarizer-ybo5.onrender.com/pdf/summarize/file", formData)
             .then((res) => {
                 const summary = res.data.summary || res.data;
-                console.log("summary",summary)
                 setSummarisedContent(summary);
                 return axios.post("https://contentsummarizer-ybo5.onrender.com/db/insert/content", {
                     content: content,
@@ -85,7 +84,6 @@ function handleTextClick() {
 
     useEffect(() => {
         if (selectedData) {
-            console.log(selectedData)
             setContent(selectedData.content);
             setSummarisedContent(selectedData.summary);
             setInputType(selectedData.type );
